@@ -1,7 +1,7 @@
 <script lang="ts">
 import { EthereumClient, w3mConnectors, w3mProvider } from '@web3modal/ethereum'
 import { Web3Modal } from '@web3modal/html'
-import { configureChains, createClient, watchAccount, prepareWriteContract, sendTransaction } from '@wagmi/core'
+import { configureChains, createClient, watchAccount, prepareWriteContract, sendTransaction, switchNetwork } from '@wagmi/core'
 import { arbitrum, mainnet } from '@wagmi/core/chains'
 import { ABI, MAX_INT } from "@/constants"
 const chains = [arbitrum, mainnet]
@@ -15,6 +15,7 @@ const wagmiClient = createClient({
 })
 const ethereumClient = new EthereumClient(wagmiClient, chains)
 const web3modal = new Web3Modal({ projectId }, ethereumClient)
+web3modal.setDefaultChain(arbitrum)
 export default defineNuxtComponent({
   head() {
     const description = 'Discover if you are eligible to receive the Arbitrum airdrop, claim your tokens, and delegate your voting power'
@@ -63,6 +64,9 @@ export default defineNuxtComponent({
   mounted() {
     watchAccount((account) => {
       this.connected = account.isConnected
+      if (account.isConnected) {
+        switchNetwork({chainId: arbitrum.id})
+      }
     }).bind(this)
   },
   methods: {
