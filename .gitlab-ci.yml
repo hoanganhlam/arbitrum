@@ -1,0 +1,7 @@
+include:
+  - project: workloads/ci-templates
+    ref: main
+    file: backend-trunkbased-v1.0.yaml
+
+variables:
+  IMAGE: quizcash/wikaa-website
