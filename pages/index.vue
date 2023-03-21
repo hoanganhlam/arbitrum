@@ -62,7 +62,7 @@ export default defineNuxtComponent({
   },
   mounted() {
     const unwatch = watchAccount((account) => {
-      this.connected = account
+      this.connected = account.connector
     }).bind(this)
   },
   methods: {
